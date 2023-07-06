@@ -2,7 +2,7 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package*.json /usr/src/app
 
 ENV DOCKERIZE_VERSION v0.7.0
 
@@ -12,6 +12,11 @@ RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_
 RUN apt-get autoremove -yqq --purge wget 
 RUN rm -rf /var/lib/apt/lists/*
 
+RUN npm install
+
+COPY . .
+
 EXPOSE 3000 
+
 
 # CMD ["node", "index.js"]

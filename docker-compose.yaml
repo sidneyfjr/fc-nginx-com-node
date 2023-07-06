@@ -10,7 +10,7 @@ services:
     networks:
       - node-network
     volumes:
-      - ./node:/usr/src/app
+      - ./node:/usr/src/app 
     tty: true
     ports:
       - "3000:3000"
@@ -21,7 +21,6 @@ services:
     build: 
       context: nginx
     container_name: nginx
-    #entrypoint: dockerize -wait tcp://app:3000 -timeout 20s /docker-entrypoint.sh nginx -g 'daemon off;'
     networks:
       - node-network
     ports:

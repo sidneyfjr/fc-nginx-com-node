@@ -26,8 +26,7 @@ connection.query(sqlInsert);
 });
 
 connection.end();
-    
-    
+       
 app.get('/', (req, res) => {
     res.send('<h1>Full Cycle Rocks!!</h1><ul>'+names+'</ul>');
 });
