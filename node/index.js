@@ -9,44 +9,27 @@ const config = {
     database: 'nodedb'
 }
 
-const sqlCount  = `select count(*) count from people`;
-const sqlNames  = `select name from people`;
-const sqlCreate = `create table people(id int not null auto_increment, name varchar(255), primary key(id));`;
-const sqlInsert = `INSERT INTO people(name) values('Dominique França')`;
-let   count;
-let   names;
-let   displayNames = [];
+const sqlNames  = `select * from people`;
+const sqlCreate = `create table IF NOT EXISTS people(id int not null auto_increment, name varchar(255), primary key(id));`;
+const sqlInsert = `INSERT INTO people(name) values('Sidney França')`;
+let   names = [];
 
-const connection    = mysql.createConnection(config);
-    
-const hasTable =   connection.query(sqlCount, function (err, result, fields)  {
-    if (err) throw err;
-    count = result[0]['count'] + 1;
-});
-
-if (!hasTable) {
-    connection.query(sqlCreate);
-    connection.query(sqlInsert);
-} else {       
-    connection.query(sqlInsert);
-}
+const connection    = mysql.createConnection(config);    
+	
+connection.query(sqlCreate);
+connection.query(sqlInsert);
 
  connection.query(sqlNames, function (err, result, fields) {
-    if (err) throw err;
-    names =  result;
+	for (const user of result) {
+		names += `<li>${user.name}</li>`;
+	}
 });
 
 connection.end();
     
-const result = () => {
-    for (let i = 0 ; i < count ; i ++) {
-        displayNames += '<li>'+names[i]['name']+'</li>';
-    }
-}
     
 app.get('/', (req, res) => {
-    result();
-    res.send('<h1>Full Cycle Rocks!!</h1>'+displayNames);
+    res.send('<h1>Full Cycle Rocks!!</h1><ul>'+names+'</ul>');
 });
 
 app.listen(port, () => {
